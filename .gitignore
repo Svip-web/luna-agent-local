@@ -1,0 +1,15 @@
+.tmp-intl-tel/
+node_modules/
+server.log
+server-error.log
+*.tmp
+.DS_Store
+Thumbs.db
+public/assets/intl-tel-input/**
+!public/assets/intl-tel-input/css/
+!public/assets/intl-tel-input/css/intlTelInput.min.css
+!public/assets/intl-tel-input/js/
+!public/assets/intl-tel-input/js/intlTelInputWithUtils.min.js
+!public/assets/intl-tel-input/img/
+!public/assets/intl-tel-input/img/flags.webp
+!public/assets/intl-tel-input/img/flags@2x.webp
