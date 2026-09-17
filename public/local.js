@@ -82,25 +82,15 @@ document.addEventListener('keydown', event => {
   }
 });
 form?.addEventListener('submit', event => {
-  event.preventDefault();
-  const status = document.querySelector('#local-status');
   if (phonePicker && !phonePicker.isValidNumber()) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
     phoneInput.setCustomValidity('Перевірте номер телефону для вибраної країни');
     phoneInput.reportValidity();
     return;
   }
-  try {
-    const entries = JSON.parse(localStorage.getItem('luna-local-registrations') || '[]');
-    const phone = phonePicker ? phonePicker.getNumber() : form.elements.phone.value;
-    entries.push({phone, createdAt: new Date().toISOString()});
-    localStorage.setItem('luna-local-registrations', JSON.stringify(entries));
-    status.textContent = 'Тестовая заявка сохранена в этом браузере. Данные никуда не отправлены.';
-    form.reset();
-    phonePicker?.setNumber('');
-  } catch {
-    status.textContent = 'Браузер не разрешил локальное сохранение. Заявка не сохранена и никуда не отправлена.';
-  }
-});
+  if (phonePicker) phoneInput.value = phonePicker.getNumber();
+}, true);
 const end = Date.now() + 1140 * 1000;
 function updateTimer() {
   const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
