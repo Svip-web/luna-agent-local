@@ -6,6 +6,7 @@ server-error.log
 .DS_Store
 Thumbs.db
 dist/
+__pycache__/
 public/assets/intl-tel-input/**
 !public/assets/intl-tel-input/css/
 !public/assets/intl-tel-input/css/intlTelInput.min.css
