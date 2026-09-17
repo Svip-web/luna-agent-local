@@ -5,6 +5,7 @@ server-error.log
 *.tmp
 .DS_Store
 Thumbs.db
+dist/
 public/assets/intl-tel-input/**
 !public/assets/intl-tel-input/css/
 !public/assets/intl-tel-input/css/intlTelInput.min.css
