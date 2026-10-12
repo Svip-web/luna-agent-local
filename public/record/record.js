@@ -6,6 +6,9 @@ const form = document.querySelector('#email-form');
 const nameInput = document.querySelector('#name');
 const phoneInput = document.querySelector('#phone');
 const submitButton = form?.querySelector('.modal-submit');
+const formPanel = document.querySelector('.modal__form-panel');
+const formSuccess = document.querySelector('.form-success');
+const formError = document.querySelector('.form-error');
 const openButtons = [...document.querySelectorAll('[data-open-modal]')];
 const closeButtons = [...document.querySelectorAll('[data-close-modal]')];
 const recordVideo = document.querySelector('.video-frame video');
@@ -17,6 +20,41 @@ let leadScriptPromise = null;
 let formAssetsPromise = null;
 let formAssetsReady = false;
 let countdownTimer = null;
+const submitButtonLabel = submitButton?.textContent || 'Оставить заявку';
+
+function setSubmitting(isSubmitting) {
+  if (!submitButton) return;
+  submitButton.disabled = isSubmitting;
+  submitButton.textContent = isSubmitting ? 'Отправляем…' : submitButtonLabel;
+  form?.setAttribute('aria-busy', String(isSubmitting));
+}
+
+window.IlPrepareForm = async data => {
+  if (formError) formError.hidden = true;
+  setSubmitting(true);
+  return data;
+};
+
+window.IlAfterForm = async data => {
+  setSubmitting(false);
+
+  if (data?.error) {
+    if (formError) {
+      formError.hidden = false;
+      formError.textContent = 'Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.';
+    }
+    return false;
+  }
+
+  if (form) form.hidden = true;
+  if (formError) formError.hidden = true;
+  if (formSuccess) formSuccess.hidden = false;
+  formPanel?.classList.add('modal__form-panel--success');
+  dialog?.classList.add('modal__dialog--success');
+  stopCountdown();
+  window.setTimeout(() => formSuccess?.focus(), 20);
+  return false;
+};
 
 function loadStylesheet(id, href) {
   if (document.getElementById(id)) return Promise.resolve();
@@ -185,14 +223,14 @@ form?.addEventListener('submit', event => {
   if (!formAssetsReady) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    submitButton.disabled = true;
+    setSubmitting(true);
     prepareFormAssets()
       .then(() => {
-        submitButton.disabled = false;
+        setSubmitting(false);
         if (validatePhone()) form.requestSubmit();
       })
       .catch(error => {
-        submitButton.disabled = false;
+        setSubmitting(false);
         console.error('Form assets failed to load', error);
         phoneInput.setCustomValidity('Не удалось загрузить форму. Проверьте соединение и попробуйте ещё раз.');
         phoneInput.reportValidity();

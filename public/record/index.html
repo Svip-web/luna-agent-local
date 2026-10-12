@@ -126,9 +126,16 @@
           <button class="modal-submit" type="submit">Оставить заявку</button>
         </form>
 
-        <div class="form-success" role="status" hidden>
-          <strong>Спасибо!</strong>
-          <span>Заявка успешно отправлена.</span>
+        <div class="form-error" role="alert" hidden>
+          Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.
+        </div>
+
+        <div class="form-success" role="status" aria-live="polite" tabindex="-1" hidden>
+          <div class="form-success__icon" aria-hidden="true">✓</div>
+          <span class="form-success__kicker">Заявка принята</span>
+          <strong>Спасибо!<br>Заявка успешно отправлена.</strong>
+          <p>Мы скоро свяжемся с вами и расскажем, как начать зарабатывать на создании ИИ-агентов.</p>
+          <button type="button" data-close-modal>Вернуться на сайт</button>
         </div>
       </div>
     </div>
@@ -137,8 +144,6 @@
   <script nonce="ilf-config">
     window.ilfConfig = {
       url: "https://mufiksoft.com/shopifyband/amo-panel/forms.php",
-      ssLink: "https://telegram.me/Vibecoding_practicum_bot?start=ZGw6MzM3Njk3",
-      ssDomain: "vibecode",
       presets: {
         smartsender: {
           title: "Консультация  запись  ИИ Агенты",
